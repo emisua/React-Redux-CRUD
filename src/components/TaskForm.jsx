@@ -1,10 +1,14 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTask } from '../features/tasks/taskSlice';
 import { v4 as uuid } from 'uuid';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const TaskForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const params = useParams();
+  const tareas = useSelector((state) => state.tasks);
 
   const [tarea, setTarea] = useState({
     title: '',
@@ -17,14 +21,32 @@ const TaskForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    tarea.id = uuid();
     console.log('tarea enviada', tarea);
-    dispatch(addTask(tarea));
-    setTarea({
-      title: '',
-      desc: '',
-    });
+    if (params.id) {
+      dispatch(editTask(tarea));
+      navigate('/');
+    } else {
+      dispatch(addTask({ ...tarea, id: uuid() }));
+      setTarea({
+        title: '',
+        desc: '',
+      });
+      navigate('/');
+    }
   };
+
+  useEffect(() => {
+    params.id ? console.log('editando') : console.log('creando');
+
+    if (params.id) {
+      const buscarTarea = tareas.filter((tarea) => {
+        return tarea.id === params.id;
+      });
+      setTarea(buscarTarea[0]);
+      console.log(buscarTarea);
+    }
+  }, []);
+
   return (
     <div>
       <h3>Formulario</h3>
