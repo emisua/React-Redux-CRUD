@@ -15,7 +15,7 @@ const TaskList = () => {
       <ul>
         {tareas.map((tarea) => {
           return (
-            <li>
+            <li key={tarea.id}>
               <Task tarea={tarea} key={tarea.id} />
             </li>
           );
