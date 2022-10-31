@@ -1,3 +1,3 @@
 # React-Redux-CRUD
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/vitejs-vite-ntd1hg)
+## CRUD para aprender cómo funciona Redux con React.
